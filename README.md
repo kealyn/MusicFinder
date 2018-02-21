@@ -29,7 +29,7 @@ In the case of [Shazam](https://www.shazam.com/), their algorithm then picks out
 
 To understand the algorithm behind the scene, we look at the following example:
 
-<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Shazam.png" width="600">
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Shazam.png" width="1000">
 
 
 Notice that the darker spots ("peaks") in Fig. 1A match the crosses in the Fig. 1B. To efficiently store and search for a match, they choose some of the peak points from within the simplified spectrogram (called "anchor points") and zones in the vicinity of them (called "target zone" in Fig. 1C). Now, for each point in the target zone, a hash that will be the aggregation of the following: the frequency at which the anchor point is located (`f1`) + the frequency at which the point in the target zone is located (`f2`)+ the time difference between the time when the point in the target zone is located in the song (`t2`) and the time when the anchor point is located in the song (`t1`) + `t1`. [2]
@@ -72,7 +72,17 @@ However, hash values by themselves are not enough to identify a specific rhythm,
 
 ## Performance
 
-[to be written]
+[to be written, original song vs microphone vs additive noise]
+
+
+## Enhancements
+
+The original use of MusicFinder is to identify musics. There are a number of things we could do to make it smarter:
+..* Add audio samples of words, phrases, and sentences so that MF could also identify certain commands, such as "turn on the TV". 
+..* The "voice recognition" mentioned in the above point is very limited and cannot process natural languages. For example, MF will not find the similarities between "turn off the computer" and "could you please shut down the computer". To make MF equip with voice recognition, neural network models need to be developed and properly trained.
+..* If the audio files are labeled with auxiliary information, MF can be used to find the appropriate label for the new sample with the help of a probability model. For example, with emotional labels for different voices, such as angry, excited, sad, etc., MF could perform as an `emotional detector` that suggests the likelihood of the given sample being recorded with a angry emotion, or happy emotion.
+
+
 
 ## Reference
 [1] Surdu, Nicolae (January 20, 2011). "How does Shazam work to recognize a song?". Archived from the original on 2016-10-24. Retrieved 12 February 2018.
