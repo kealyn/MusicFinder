@@ -31,28 +31,27 @@ class Decoder(object):
     '''
     def read(self, filename, limit=-1):
         
-        print ("Reading data from file ", filename, "with limit=", limit)
         # Retrieve audio file
         audiofile = AudioSegment.from_file(filename)
 
-        # Truncate audio file is limit is provided
+        # Truncate audio file if limit is provided
         if limit and limit != -1:
             audiofile = audiofile[:limit * 1000]
 
         # Dump the data into np array
         data = np.fromstring(audiofile._data, np.int16)
 
-        print ("Data shape ", data.shape)
+        print ("  Data shape ", data.shape)
 
         channel_count = audiofile.channels
-        print ("Channel count = ", channel_count)
+        print ("  Channel count = ", channel_count)
 
         channels = []
         for ch in range(channel_count):
             channels.append(data[ch::audiofile.channels])
 
         fs = audiofile.frame_rate
-        print ("Framerate = ", fs)
+        print ("  Framerate = ", fs)
 
         return channels, fs
 
