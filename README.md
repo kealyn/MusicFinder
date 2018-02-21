@@ -12,7 +12,10 @@ FFT is an algorithm that samples a signal over a period of time (or space) and d
 on the same scale.
 
 Following is a picture ([spectrogram](https://en.wikipedia.org/wiki/Spectrogram)) for the song *Yesterday Once More* in frequency domain. 
-[Fig 1. Spectrogram of full song](https://github.com/kealyn/MusicFinder/blob/master/Spectro_Original.png)
+
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Spectro_Original.png" width="600">
+                 Fig 1. Spectrogram of Yesterday Once More
+
 The x-axis represents the sampling over time for the song. As per [Nyquist–Shannon sampling theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem), we need a sampling rate of 44,100 Hz to avoid frequency loss. The y-axis represents the range of frequencies. The FFT shows us the strength, i.e. amplitude, of the signal at that particular frequency. As shown in the picture, the frequency and time values are discretized, while the amplitudes are continuous. Brighter color indicates higher amplitude.
 
 ### Fingerprints
@@ -27,12 +30,16 @@ In the case of [Shazam](https://www.shazam.com/), their algorithm then picks out
 
 To understand the algorithm behind the scene, we look at the following example:
 
-[Fig 2 (a). The initial spectrogram](https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/1.png | width=100)
+<img src="https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/1.png" width="400">
+       Fig 2 (a). The initial spectrogram
 
-[Fig 2 (b). Simplified spectrogram (Constellation map)](https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/2.png | width=100)
+<img src="https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/2.png" width="400">
+       Fig 2 (b). Simplified spectrogram (Constellation map)
 
 Notice that the darker spots ("peaks") in Fig 2(a) match the crosses in the Fig 2 (b). To efficiently store and search for a match, they choose some of the peak points from within the simplified spectrogram (called "anchor points") and zones in the vicinity of them (called "target zone"). Now, for each point in the target zone, a hash that will be the aggregation of the following: the frequency at which the anchor point is located (`f1`) + the frequency at which the point in the target zone is located (`f2`)+ the time difference between the time when the point in the target zone is located in the song (`t2`) and the time when the anchor point is located in the song (`t1`) + `t1`. [2]
-[Fig 3. Hash calculation](https://web.archive.org/web/20160324143227/http://www.soyoucode.com/wp-content/uploads/2011/01/4.png | width=100)
+
+[Fig 3. Hash calculation](https://web.archive.org/web/20160324143227/http://www.soyoucode.com/wp-content/uploads/2011/01/4.png)
+
 To simplify: `hash = (f1+f2+(t2-t1))+t1`, illustrated in the above figure (Fig 3).
 
 
