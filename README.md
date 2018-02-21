@@ -7,11 +7,11 @@ Inspired by dejavu project, here I build and present the workflow of MusicFinder
 
 ### FFT: from time domain to frequency domain
 
-As a first step, we need to extract useful information from the music that could help identify it. For this purpose, we take help from [Fast Fourier Transform] (https://en.wikipedia.org/wiki/Fast_Fourier_transform). 
+As a first step, we need to extract useful information from the music that could help identify it. For this purpose, we take help from [Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform). 
 FFT is an algorithm that samples a signal over a period of time (or space) and divides it into its frequency components. By transforming the music from time domain to frequency domain, we will have a unified representation of different musics
 on the same scale.
 
-Following is a picture ([spectrogram] (https://en.wikipedia.org/wiki/Spectrogram)) for the song *Yesterday Once More* in frequency domain. 
+Following is a picture ([spectrogram](https://en.wikipedia.org/wiki/Spectrogram)) for the song *Yesterday Once More* in frequency domain. 
 
 
 
