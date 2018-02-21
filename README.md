@@ -13,8 +13,7 @@ on the same scale.
 
 Following is a picture ([spectrogram](https://en.wikipedia.org/wiki/Spectrogram)) for the song *Yesterday Once More* in frequency domain. 
 
-<img src="https://github.com/kealyn/MusicFinder/blob/master/Spectro_Original.png" width="600">
-                 Fig 1. Spectrogram of Yesterday Once More
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Spectro_Original.png" width="600">
 
 The x-axis represents the sampling over time for the song. As per [Nyquist–Shannon sampling theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem), we need a sampling rate of 44,100 Hz to avoid frequency loss. The y-axis represents the range of frequencies. The FFT shows us the strength, i.e. amplitude, of the signal at that particular frequency. As shown in the picture, the frequency and time values are discretized, while the amplitudes are continuous. Brighter color indicates higher amplitude.
 
@@ -30,33 +29,50 @@ In the case of [Shazam](https://www.shazam.com/), their algorithm then picks out
 
 To understand the algorithm behind the scene, we look at the following example:
 
-<img src="https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/1.png" width="400">
-       Fig 2 (a). The initial spectrogram
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Shazam.png" width="600">
 
 
-<img src="https://web.archive.org/web/20161024115723/http://www.soyoucode.com/wp-content/uploads/2011/01/2.png" width="400">
-       Fig 2 (b). Simplified spectrogram (Constellation map)
-
-
-Notice that the darker spots ("peaks") in Fig 2(a) match the crosses in the Fig 2 (b). To efficiently store and search for a match, they choose some of the peak points from within the simplified spectrogram (called "anchor points") and zones in the vicinity of them (called "target zone"). Now, for each point in the target zone, a hash that will be the aggregation of the following: the frequency at which the anchor point is located (`f1`) + the frequency at which the point in the target zone is located (`f2`)+ the time difference between the time when the point in the target zone is located in the song (`t2`) and the time when the anchor point is located in the song (`t1`) + `t1`. [2]
-
-[Fig 3. Hash calculation](https://web.archive.org/web/20160324143227/http://www.soyoucode.com/wp-content/uploads/2011/01/4.png)
+Notice that the darker spots ("peaks") in Fig. 1A match the crosses in the Fig. 1B. To efficiently store and search for a match, they choose some of the peak points from within the simplified spectrogram (called "anchor points") and zones in the vicinity of them (called "target zone" in Fig. 1C). Now, for each point in the target zone, a hash that will be the aggregation of the following: the frequency at which the anchor point is located (`f1`) + the frequency at which the point in the target zone is located (`f2`)+ the time difference between the time when the point in the target zone is located in the song (`t2`) and the time when the anchor point is located in the song (`t1`) + `t1`. [2]
 
 To simplify:
 
 ```
 fingerprint hash value = F(frequencies of peaks, time difference between peaks) = (f1+f2+(t2-t1))+t1
 ```
-illustrated in the above figure (Fig 3). Note that there are lots of different ways to do this, Shazam has their own, SoundHound another, and so on. The point is that by taking into account more than a single peak's values can create fingerprints that have more entropy and have less hash collision. In the MusicFinder project, we will utilize a simplified Shazam algorithm, which yields a good level of accuracy with less complications of logic.
+illustrated in the above figure (Fig. 1D). Note that there are lots of different ways to do this, Shazam has their own, SoundHound another, and so on. The point is that by taking into account more than a single peak's values can create fingerprints that have more entropy and have less hash collision. 
+
+In the MusicFinder project, we will employ a variation of Shazam algorithm. For each peak point *p*, we will identify *k* nearest anchors (`a_i, i = 1,..,k`) in time incremental order with a threshold *T* in frequency domain, and then we use the following formula to compute the hash value for this peak
+
+<img src="http://latex.codecogs.com/gif.latex?Hash(p)=\{t(p)+\sum_{i=1}^{k}[(f(a_i)%20-%20f(p))+(t(a_i)%20-%20t(p))]\%20\Bigg|%20\%20|f(a_i)%20-%20f(p)|%20%3C%20T\}">
+
+where *t(p)* represents the time value of point *p* while *f(p)* represents the frequency value of *p*. [This heuristic is to be tested and is subject to change in the following week.]
+
+## Identifying peaks and anchors
+
+We have covered the part that how to compute the hash values for peak points, but wait, where did you get these peaks and anchors? Taking one step back, identifying peak points is totally a different (and interesting) problem.
+
+[to be written]
+
+
 
 ## Storing the fingerprints
 
-The above-mentioned combinatorial hashing leads to a good amount of hash values. 
+The above-mentioned combinatorial hashing leads to a good amount of hash values: a hash value for each peak point.
+
+[to be written]
+
+However, hash values by themselves are not enough to identify a specific rhythm, we need to store the correct order of them.
+
 
 
 ## Recognition
 
+[to be written]
 
+
+## Performance
+
+[to be written]
 
 ## Reference
 [1] Surdu, Nicolae (January 20, 2011). "How does Shazam work to recognize a song?". Archived from the original on 2016-10-24. Retrieved 12 February 2018.
