@@ -77,10 +77,9 @@ However, hash values by themselves are not enough to identify a specific rhythm,
 
 ## Enhancements
 
-The original use of MusicFinder is to identify musics. There are a number of things we could do to make it smarter:
-..* Add audio samples of words, phrases, and sentences so that MF could also identify certain commands, such as "turn on the TV". 
-..* The "voice recognition" mentioned in the above point is very limited and cannot process natural languages. For example, MF will not find the similarities between "turn off the computer" and "could you please shut down the computer". To make MF equip with voice recognition, neural network models need to be developed and properly trained.
-..* If the audio files are labeled with auxiliary information, MF can be used to find the appropriate label for the new sample with the help of a probability model. For example, with emotional labels for different voices, such as angry, excited, sad, etc., MF could perform as an `emotional detector` that suggests the likelihood of the given sample being recorded with a angry emotion, or happy emotion.
+- **"Pseudo" vocie recognition:** Add audio samples of words, phrases, and sentences so that MF could also identify certain commands, such as "turn on the TV". 
+- **Voice recognition:** The voice recognition mentioned in the above point is very limited and cannot process natural languages. For example, MF will not find the similarities between "turn off the computer" and "could you please shut down the computer". To make MF equip with voice recognition, neural network models need to be integrated and properly trained.
+- **Emotional detector:** If the audio files are labeled with auxiliary information, MF can be used to find the appropriate label for the new sample with the help of a probability model. For example, with emotional labels for different voices, such as angry, excited, sad, etc., MF could perform as an `emotional detector` that suggests the likelihood of the given sample being recorded with a angry emotion, or happy emotion.
 
 
 
