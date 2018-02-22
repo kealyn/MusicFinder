@@ -3,6 +3,7 @@ import os
 import sys
 import src.Decoder as Decoder
 import src.FingerPrinter as FingerPrinter
+import src.Recognizer as Recognizer
 
 '''
 Class body for MusicFinder. It defines the constructor and member functions.
@@ -16,6 +17,7 @@ class MusicFinder(object):
         self.limit = -1
         self.Decoder = Decoder.Decoder()
         self.FingerPrinter = FingerPrinter.FingerPrinter()
+        self.Recognizer = Recognizer.Recognizer()
 
     '''
     Function that records fingerprints of all files with given extension in the given path
@@ -33,9 +35,21 @@ class MusicFinder(object):
 
         # Process files
         # TODO: This process can be optimized by processing multiple files in parallel
+        song_dict = {}
+        file_id = 1
         for file_name in filenames_to_fingerprint:
             hashes = self.record(file_name)
             print ("Hashing count:", len(hashes))
+
+            # Temporary testing: test the same song to see the number of matches
+            new_hashes = self.record(file_name, 200) # TODO: check why new hash is more
+            print ("New hashing count:", len(new_hashes))
+            matches = self.Recognizer.find_match(hashes, new_hashes)
+            print ("Number of matches:", matches)
+            song_dict[file_id] = hashes
+            file_id += 1
+
+
 
     '''
     Function that triggers the recording of the fingerprints for the given file

@@ -43,7 +43,7 @@ illustrated in the above figure (Fig. 1D). Note that there are lots of different
 
 In the MusicFinder project, we will employ a variation of Shazam algorithm. For each peak point *p*, we will identify *k* nearest anchors (`a_i, i = 1,..,k`) in time incremental order with a threshold *T* in frequency domain, and then we use the following formula to compute the hash value for this peak
 
-<img src="http://latex.codecogs.com/gif.latex?Hash(p)=\{f(p)+\sum_{i=1}^{k}[|f(a_i)%20-%20f(p)|+|t(a_i)%20-%20t(p)|]\%20\Bigg|%20\%20|f(a_i)%20-%20f(p)|%20%3C%20T_p \wedge |t(a_i)%20-%20t(p)|%20%3C%20T_t\}">
+<img src="http://latex.codecogs.com/gif.latex?Hash(p)=\{f(p)+\sum_{i=1}^{k}[|f(a_i)%20-%20f(p)|+|t(a_i)%20-%20t(p)|]\%20\Bigg|%20\%20|t(a_i)%20-%20t(p)|%20%3C%20T\}">
 
 where *t(p)* represents the time value of point *p* while *f(p)* represents the frequency value of *p*. [This heuristic is to be tested and is subject to change in the following week.]
 

@@ -110,11 +110,11 @@ class FingerPrinter:
                     t_delta += t2 - t1
                     freq_delta += math.fabs(freq2 - freq1)
 
-            # Filter time and frequency difference within a reasonable range
-            # TODO: calibration may be needed
-            # 5000 hz of freq difference
-            # 10 ms of time difference
-            if freq_delta > 0 and freq_delta <= 5000 and t_delta > 0 and t_delta <= 441:         
-                line = "%s|%s|%s" % (str(freq1), str(freq_delta), str(t_delta))
-                h = hashlib.sha1(line.encode('utf-8'))
-                yield (h.hexdigest(), t1)
+                # Filter time and frequency difference within a reasonable range
+                # TODO: calibration may be needed
+                # 5000 hz of freq difference
+                # 10 ms of time difference
+                if freq_delta > 0 and freq_delta <= 5000 and t_delta > 0 and t_delta <= 441:         
+                    line = "%s|%s|%s" % (str(freq1), str(freq_delta), str(t_delta))
+                    h = hashlib.sha1(line.encode('utf-8'))
+                    yield (h.hexdigest(), t1)
