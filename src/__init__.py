@@ -34,7 +34,8 @@ class MusicFinder(object):
         # Process files
         # TODO: This process can be optimized by processing multiple files in parallel
         for file_name in filenames_to_fingerprint:
-            self.record(file_name)
+            hashes = self.record(file_name)
+            print ("Hashing count:", len(hashes))
 
     '''
     Function that triggers the recording of the fingerprints for the given file
@@ -44,7 +45,7 @@ class MusicFinder(object):
         song_name, extension = os.path.splitext(os.path.basename(filename))
 
         # Read channel samples and frame rate from the file
-        print ("Step 1: Reading data from file ", file_name, "with limit = ", limit)
+        print ("Step 1: Reading data from file ", filename, "with limit = ", limit)
         channels, fs = self.Decoder.read(filename, limit)
 
         # Rashing result
@@ -54,7 +55,7 @@ class MusicFinder(object):
         print ("Step 2: Encoding channel data")
         for number, channel in enumerate(channels):
             print("  Channel %d/%d started..." % (number+1, channel_count))
-            hashings_cur_channel = self.FingerPrinter.fingerprint(channel, Fs=Fs)
+            hashings_cur_channel = self.FingerPrinter.fingerprint(number+1, channel, fs=fs)
             print("  Channel %d/%d completed." % (number+1, channel_count))
             res_hash |= set(hashings_cur_channel)
 
