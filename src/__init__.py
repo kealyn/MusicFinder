@@ -1,9 +1,11 @@
 
 import os
 import sys
+import src.RunParams as RunParams
 import src.Decoder as Decoder
 import src.FingerPrinter as FingerPrinter
 import src.Recognizer as Recognizer
+import src.HashingManager as HashingManager
 
 '''
 Class body for MusicFinder. It defines the constructor and member functions.
@@ -18,6 +20,7 @@ class MusicFinder(object):
         self.Decoder = Decoder.Decoder()
         self.FingerPrinter = FingerPrinter.FingerPrinter()
         self.Recognizer = Recognizer.Recognizer()
+        self.HashingManager = HashingManager.HashingManager()
 
     '''
     Function that records fingerprints of all files with given extension in the given path
@@ -33,20 +36,21 @@ class MusicFinder(object):
         print ("\n".join(filenames_to_fingerprint))
         print ("---------------------------------------------------------")
 
-        # Process files
+        # Process audio files
         # TODO: This process can be optimized by processing multiple files in parallel
-        song_dict = {}
         file_id = 1
+        count = 0
         for file_name in filenames_to_fingerprint:
-            hashes = self.record(file_name)
-            print ("Hashing count:", len(hashes))
+            hashes = self.record(file_name, RunParams.Default_Audio_Limit)
+            count += len(hashes)
+            print ("Step 3: Writing hash values to file ...")
 
-            # Temporary testing: test the same song to see the number of matches
-            new_hashes = self.record(file_name, 200) # TODO: check why new hash is more
-            print ("New hashing count:", len(new_hashes))
-            matches = self.Recognizer.find_match(hashes, new_hashes)
-            print ("Number of matches:", matches)
-            song_dict[file_id] = hashes
+            # Find song name and extension
+            song_name, extension = os.path.splitext(os.path.basename(filename))
+            self.HashingManager.dump_to_file(file_id, song_name, hashes)
+
+            print ("  "+ str(count) +" hash values have been written")
+
             file_id += 1
 
 
@@ -55,8 +59,6 @@ class MusicFinder(object):
     Function that triggers the recording of the fingerprints for the given file
     '''
     def record(self, filename, limit=-1):
-        # Find song name and extension
-        song_name, extension = os.path.splitext(os.path.basename(filename))
 
         # Read channel samples and frame rate from the file
         print ("Step 1: Reading data from file ", filename, "with limit = ", limit)
@@ -75,7 +77,11 @@ class MusicFinder(object):
 
         return res_hash
 
-
+    '''
+    Function that loads the fingerprints from designated csv file
+    '''
+    def load_fingerprints(self, csv_file_name = RunParams.Default_Hash_File_Name):
+        id_name, id_hash = self.fingerprints = self.HashingManager.read_from_file(csv_file_name)
 
 
 

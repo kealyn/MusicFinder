@@ -67,6 +67,7 @@ class FingerPrinter:
         p = zip(i, j, peaks_extracted.flatten())
         peaks_filtered = [x for x in p if x[2] > threshold]
 
+        print ("    Number of peaks:", len(peaks_filtered))
         # get indices for frequency and time
         frequency_idx = [x[1] for x in peaks_filtered]
         time_idx      = [x[0] for x in peaks_filtered]
