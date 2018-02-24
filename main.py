@@ -14,7 +14,7 @@ if __name__ == '__main__':
         help='Recognize given music file\n'
              'Usage:\n'
              '--r "/path/to/file" \n')
-    parser.add_argument('-p', '--p', nargs=1, 
+    parser.add_argument('-p', '--p', action="store_true", dest="p",
         help='Plot all fingerprints distribution.')
     args = parser.parse_args()
 	

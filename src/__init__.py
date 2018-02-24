@@ -44,10 +44,10 @@ class MusicFinder(object):
         file_id = 1
         count = 0
         for file_name in filenames_to_fingerprint:
-            
+
             # Find song name and extension
             song_name, extension = os.path.splitext(os.path.basename(file_name))
-            print ("(%d/%d) Processing file %s" % (file_id, len(filenames_to_fingerprint, song_name)))
+            print ("(%d/%d) Processing file %s" % (file_id, len(filenames_to_fingerprint), song_name))
 
             hashes = self.record(file_name, RunParams.Default_Audio_Limit)
             count += len(hashes)
@@ -93,10 +93,18 @@ class MusicFinder(object):
         self.id_name, self.id_hash = self.HashingManager.read_from_file(csv_file_name)
         self.Recognizer.initialize_fingerprints_library(self.id_name, self.id_hash)
         self.fingerprint_loaded = True
+        print (self.id_name)
 
+    '''
+    API function that plots the distribution of all loaded fingerpritns
+    '''
     def plot_all_fingerprints(self):
-        self.Plotter.plot_fingerprints_ditribution(id_name, id_hash)
+        self.Plotter.plot_fingerprints_ditribution(self.id_name, self.id_hash)
 
+    '''
+    Method that recognizes the given music file and return the name of the song 
+    that is the best match from the library
+    '''
     def recognize_file(self, file_name):
 
         if not self.fingerprint_loaded:

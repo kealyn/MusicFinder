@@ -24,33 +24,33 @@ class Recognizer(object):
     '''
     Test function
     '''
-    def find_match(self, original_hash, new_hash):
+    def find_match(self, original_hash_set, new_hash_set):
         
         # Conver the original hash into dictionary
         mapper = {}
-        for h, offset in original_hash:
+        for h, offset in original_hash_set:
             mapper[h] = offset
 
-        return self.find_match_from_mapping(new_hash, mapper)
+        return self.find_match_from_mapping(new_hash_set, mapper)
 
 
-    def find_match_from_mapping(self, new_hash, mapper):
+    def find_match_from_mapping(self, new_hash_set, mapper):
         
         res = 0
 
         # Find matches
-        for newh, _ in new_hash:
+        for newh, _ in new_hash_set:
             if newh in mapper:
                 res += 1
 
         return res
 
-    def find_song_name(self, new_hash):
+    def find_song_name(self, new_hash_set):
 
         max_count = 0
         best_song_id = -1
         for song_id, original_hash_mapping in self.song_id_hash_mapping.items():
-            cur_count = self.find_match_from_mapping(new_hash, original_hash_mapping)
+            cur_count = self.find_match_from_mapping(new_hash_set, original_hash_mapping)
             print (self.song_id_name_mapping[song_id], "matching:", cur_count)
             if cur_count > max_count:
                 max_count = cur_count

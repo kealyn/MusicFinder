@@ -38,13 +38,17 @@ class HashingManager(object):
         # Data frame created with the hash list
         df = pd.DataFrame(hashlist, columns=[FILE_ID, FILE_NAME, HASHVALUE, OFFSET])
 
+        print (df)
         # Dump to csv file
-        df.to_csv(RunParams.Default_Hash_File_Name, mode='a', sep=',', encoding='utf-8', index=False)
+        df.to_csv(RunParams.Default_Hash_File_Name, mode='a', sep=',', encoding='utf-8', index=False, header = [FILE_ID, FILE_NAME, HASHVALUE, OFFSET])
 
     '''
     Method that loads hash values along with music metadata from file
     '''
     def read_from_file(self, file_name):
+
+        print ("Loading fingerprints from file", file_name)
+        
         df = pd.read_csv(file_name, header=0)
 
         #print (df.head(20))
@@ -52,7 +56,6 @@ class HashingManager(object):
         song_id_name_mapping = {}
         song_id_hash_mapping = {}
         for _, row in df.iterrows():
-
             song_id = row[FILE_ID]
 
             # Create a song_id and song_name mapping
