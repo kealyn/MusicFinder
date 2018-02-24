@@ -19,7 +19,7 @@ Default_Peak_Neighborhood_Size = 20
 Default_Target_Area = 10
 
 # flag that indicates whether peaks should be plotted
-Should_Plot_Peaks = False
+Should_Plot_Peaks = True
 
 # default audio limit
 Default_Audio_Limit = -1

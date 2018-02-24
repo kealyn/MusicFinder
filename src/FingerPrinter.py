@@ -1,6 +1,5 @@
 import numpy as np
 from FFT import FFT
-import matplotlib.pyplot as plt
 import math
 import hashlib
 import RunParams
@@ -31,11 +30,8 @@ class FingerPrinter:
         # find local maxima as peak points
         peaks, time_idx, frequency_idx = self.get_peaks_above_threshold(spectrum, threshold=RunParams.Default_Peak_Threshold)
 
-        # Plot the peaks (when flag is set to True)
-        self.plot_spectrum(spectrum, time_idx, frequency_idx, chan_number)
-
         # Step 3: Compute hashes
-        return self.generate_hashes(peaks)
+        return self.generate_hashes(peaks), spectrum, time_idx, frequency_idx, chan_number
 
     '''
     Method that identifies and returns the peak points from a given spectrum.
@@ -73,22 +69,6 @@ class FingerPrinter:
         time_idx      = [x[0] for x in peaks_filtered]
 
         return peaks_filtered, time_idx, frequency_idx
-
-    '''
-    Method that plots the peaks in the spectrum into file
-    '''
-    def plot_spectrum(self, spectrum, time_idx, frequency_idx, chan_number):
-        if RunParams.Should_Plot_Peaks:
-            print ("    Plotting peaks for channel ", chan_number)
-            # scatter of the peaks
-            fig, ax = plt.subplots()
-            ax.imshow(spectrum)
-            ax.scatter(time_idx, frequency_idx)
-            ax.set_xlabel('Time')
-            ax.set_ylabel('Frequency')
-            ax.set_title("Spectrogram_channel_" + str(chan_number))
-            plt.gca().invert_yaxis()
-            plt.savefig("Plots/Channel_"+str(chan_number)+".png")
 
     '''
     Method that generates hash values for each peak point with a time offset.

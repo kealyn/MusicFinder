@@ -13,7 +13,9 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--r', nargs=1, 
         help='Recognize given music file\n'
              'Usage:\n'
-             '--r /path/to/file \n')
+             '--r "/path/to/file" \n')
+    parser.add_argument('-p', '--p', nargs=1, 
+        help='Plot all fingerprints distribution.')
     args = parser.parse_args()
 	
     # create a MusicFinder instance
@@ -21,7 +23,7 @@ if __name__ == '__main__':
     if args.f:
         # Fingerprint all files in a directory
         directory = args.f[0]
-        
+
         if len(args.f) == 2:
             extension = args.f[1]
         else:
@@ -43,6 +45,13 @@ if __name__ == '__main__':
 
     	# Display song name
         print ("Best match:", song_name)
+    elif args.p:
+        # Plot fingerprints distribution
+
+        # Load all fingerprints
+        mf.load_fingerprints()
+        mf.plot_all_fingerprints()
+
 
     sys.exit(0)
 

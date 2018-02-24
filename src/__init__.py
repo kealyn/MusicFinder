@@ -6,6 +6,7 @@ import src.Decoder as Decoder
 import src.FingerPrinter as FingerPrinter
 import src.Recognizer as Recognizer
 import src.HashingManager as HashingManager
+import src.Plotter as Plotter
 
 '''
 Class body for MusicFinder. It defines the constructor and member functions.
@@ -22,6 +23,7 @@ class MusicFinder(object):
         self.FingerPrinter = FingerPrinter.FingerPrinter()
         self.Recognizer = Recognizer.Recognizer()
         self.HashingManager = HashingManager.HashingManager()
+        self.Plotter = Plotter.Plotter()
 
     '''
     Function that records fingerprints of all files with given extension in the given path
@@ -42,12 +44,15 @@ class MusicFinder(object):
         file_id = 1
         count = 0
         for file_name in filenames_to_fingerprint:
+            
+            # Find song name and extension
+            song_name, extension = os.path.splitext(os.path.basename(file_name))
+            print ("(%d/%d) Processing file %s" % (file_id, len(filenames_to_fingerprint, song_name)))
+
             hashes = self.record(file_name, RunParams.Default_Audio_Limit)
             count += len(hashes)
             print ("Step 3: Writing hash values to file ...")
 
-            # Find song name and extension
-            song_name, extension = os.path.splitext(os.path.basename(file_name))
             self.HashingManager.dump_to_file(file_id, song_name, hashes)
 
             print ("  "+ str(count) +" hash values have been written")
@@ -72,7 +77,10 @@ class MusicFinder(object):
         print ("Step 2: Encoding channel data")
         for number, channel in enumerate(channels):
             print("  Channel %d/%d started..." % (number+1, channel_count))
-            hashings_cur_channel = self.FingerPrinter.fingerprint(number+1, channel, fs=fs)
+            hashings_cur_channel, spectrum, time_idx, frequency_idx, chan_number \
+                = self.FingerPrinter.fingerprint(number+1, channel, fs=fs)
+            # Plot the peaks (when flag is set to True)
+            self.Plotter.plot_spectrum(spectrum, time_idx, frequency_idx, chan_number)
             print("  Channel %d/%d completed." % (number+1, channel_count))
             res_hash |= set(hashings_cur_channel)
 
@@ -82,9 +90,12 @@ class MusicFinder(object):
     Function that loads the fingerprints from designated csv file
     '''
     def load_fingerprints(self, csv_file_name = RunParams.Default_Hash_File_Name):
-        id_name, id_hash = self.HashingManager.read_from_file(csv_file_name)
-        self.Recognizer.initialize_fingerprints_library(id_name, id_hash)
+        self.id_name, self.id_hash = self.HashingManager.read_from_file(csv_file_name)
+        self.Recognizer.initialize_fingerprints_library(self.id_name, self.id_hash)
         self.fingerprint_loaded = True
+
+    def plot_all_fingerprints(self):
+        self.Plotter.plot_fingerprints_ditribution(id_name, id_hash)
 
     def recognize_file(self, file_name):
 

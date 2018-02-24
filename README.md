@@ -61,16 +61,30 @@ The above-mentioned combinatorial hashing leads to a good amount of hash values:
 
 [to be written]
 
-However, hash values by themselves are not enough to identify a specific rhythm, we need to store the correct order of them.
+However, hash values by themselves are not enough to identify a specific rhythm, we need to store the correct order of them, i.e. time dimension.
+
+[csv format of fingerprints]
 
 
 
 ## Recognition
 
+
 [to be written]
 
 
 ## Performance
+
+Testing dataset: 68 songs in mp3 extension. Sampling rate: 44100 Hz.
+
+[fingerprint ditribution here]
+
+Total number of fingerprints: 839,765. Hash library size 67 MB.
+
+
+
+[for a particular song, print the matching distribution]
+
 
 [to be written, original song vs microphone vs additive noise]
 
