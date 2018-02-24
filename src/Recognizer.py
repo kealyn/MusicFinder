@@ -17,17 +17,26 @@ Class that is mainly responsible for recognizing an audio file
 '''
 class Recognizer(object):
 
+    def initialize_fingerprints_library(self, id_name, id_hash):
+        self.song_id_name_mapping = id_name
+        self.song_id_hash_mapping = id_hash
+
     '''
     Test function
     '''
     def find_match(self, original_hash, new_hash):
         
-        res = 0
-
         # Conver the original hash into dictionary
         mapper = {}
         for h, offset in original_hash:
             mapper[h] = offset
+
+        return self.find_match_from_mapping(new_hash, mapper)
+
+
+    def find_match_from_mapping(self, new_hash, mapper):
+        
+        res = 0
 
         # Find matches
         for newh, _ in new_hash:
@@ -36,3 +45,19 @@ class Recognizer(object):
 
         return res
 
+    def find_song_name(self, new_hash):
+
+        max_count = 0
+        best_song_id = -1
+        for song_id, original_hash_mapping in self.song_id_hash_mapping.items():
+            cur_count = self.find_match_from_mapping(new_hash, original_hash_mapping)
+            print (self.song_id_name_mapping[song_id], "matching:", cur_count)
+            if cur_count > max_count:
+                max_count = cur_count
+                best_song_id = song_id
+                
+
+        if best_song_id != -1:
+            return self.song_id_name_mapping[best_song_id]
+        else:
+            return "No match."

@@ -22,7 +22,7 @@ Default_Target_Area = 10
 Should_Plot_Peaks = False
 
 # default audio limit
-Default_Audio_Limit = 2
+Default_Audio_Limit = -1
 
 # default file name that stores all hash values
 Default_Hash_File_Name = "Hash_Library.csv"

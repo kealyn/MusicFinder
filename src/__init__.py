@@ -17,6 +17,7 @@ class MusicFinder(object):
     '''
     def __init__(self):
         self.limit = -1
+        self.fingerprint_loaded = False
         self.Decoder = Decoder.Decoder()
         self.FingerPrinter = FingerPrinter.FingerPrinter()
         self.Recognizer = Recognizer.Recognizer()
@@ -46,7 +47,7 @@ class MusicFinder(object):
             print ("Step 3: Writing hash values to file ...")
 
             # Find song name and extension
-            song_name, extension = os.path.splitext(os.path.basename(filename))
+            song_name, extension = os.path.splitext(os.path.basename(file_name))
             self.HashingManager.dump_to_file(file_id, song_name, hashes)
 
             print ("  "+ str(count) +" hash values have been written")
@@ -81,7 +82,20 @@ class MusicFinder(object):
     Function that loads the fingerprints from designated csv file
     '''
     def load_fingerprints(self, csv_file_name = RunParams.Default_Hash_File_Name):
-        id_name, id_hash = self.fingerprints = self.HashingManager.read_from_file(csv_file_name)
+        id_name, id_hash = self.HashingManager.read_from_file(csv_file_name)
+        self.Recognizer.initialize_fingerprints_library(id_name, id_hash)
+        self.fingerprint_loaded = True
 
+    def recognize_file(self, file_name):
 
+        if not self.fingerprint_loaded:
+            self.load_fingerprints()
+
+        # Convert given music to hash
+        new_hash = self.record(file_name)
+
+        # Find the best match of given the new hashing
+        song_name = self.Recognizer.find_song_name(new_hash)
+
+        return song_name
 
