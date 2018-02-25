@@ -90,8 +90,8 @@ class Plotter(object):
         values = list(candidates.values())
 
         # Sort based on values
-        names = [x for _,x in sorted(zip(values,keys))]
-        counts = sorted(values)
+        names = [x for _,x in sorted(zip(values,keys), reverse=True)]
+        counts = sorted(values, reverse=True)
 
         # position of bar
         bar_width = 4
@@ -102,13 +102,13 @@ class Plotter(object):
         mask2 = counts >= num_hash_original * 0.5
 
         plt.rcParams["figure.figsize"] = [16,9]
-        plt.rcParams.update({'font.size': 20})
+        plt.rcParams.update({'font.size': 18})
         plt.rc('font', family='Microsoft YaHei')
         plt.bar(y_pos[mask1], counts[mask1], color = 'darkgreen', width=bar_width, align='center')
         plt.bar(y_pos[mask2], counts[mask2], color = 'firebrick', width=bar_width, align='center')
 
         # Plot distribution
-        plt.xticks(y_pos, names,rotation=45, size=8)
+        plt.xticks(y_pos, names,rotation=45, size=14)
         plt.ylabel('Matching hashes')
         plt.title('Candidate songs')
         plt.subplots_adjust(bottom=0.2, top=0.8)

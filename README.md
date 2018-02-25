@@ -49,9 +49,26 @@ where *t(p)* represents the time value of point *p* while *f(p)* represents the 
 
 ## Identifying peaks and anchors
 
-We have covered the part that how to compute the hash values for peak points, but wait, where did you get these peaks and anchors? Taking one step back, identifying peak points is totally a different (and interesting) problem.
+We have covered the part that how to compute the hash values for peak points, but wait, where did you get these peaks and anchors? Taking one step back, identifying peak points itself is a different (and interesting) problem.
 
-[to be written]
+From the spectrum image, a natural way to identify peaks is to traverse all the pixels and apply against a high-pass filtering. Thus, we treat this problem as a image processing problem with the help of [mathematical morphology](https://en.wikipedia.org/wiki/Mathematical_morphology).
+
+
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Morphological_neighborhood.png" width="400">
+
+To accurately identify a peak, it is important to consider its neighborhood to decrease the interference from noises. 
+
+**Step 1.** We use the following neighborhood structure to serve as a "mask" and apply to the spectrum recursively for each pixel that is greater than threshold. The result of this step is a matrix `M` with identified local maximums.
+
+**Step 2.** By employing [erosion](https://en.wikipedia.org/wiki/Erosion_(morphology)), a background `B` with erosion operation has been generated.
+
+**Step 3.** Subtract `M` by `B` will yield the peaks `P0`.
+
+**Step 4.** To adjust the number of fingerprints, a threshold `Default_Peak_Threshold` is applied to `P0` and finally we get the desired peaks as `P`. 
+
+```
+Default_Peak_Threshold: Minimum amplitude in spectrogram in order to be considered a peak. Higher value could reduce number of fingerprints, but can negatively affect accuracy.
+```
 
 
 
