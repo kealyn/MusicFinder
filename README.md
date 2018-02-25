@@ -64,9 +64,9 @@ To accurately identify a peak, it is important to consider its neighborhood to d
 
 **Step 3.** Subtract `M` by `B` will yield the peaks `P0`.
 
-**Step 4.** To adjust the number of fingerprints, a threshold `Default_Peak_Threshold<sup>i</sup>` is applied to `P0` and finally we get the desired peaks as `P`. 
+**Step 4.** To adjust the number of fingerprints, a threshold `Default_Peak_Threshold`<sup>(i)</sup> is applied to `P0` and finally we get the desired peaks as `P`. 
 
-<sup>i</sup> `Default_Peak_Threshold`: Minimum amplitude in spectrogram in order to be considered a peak. Higher value could reduce number of fingerprints, but can negatively affect accuracy.
+<sup>(i)</sup> `Default_Peak_Threshold`: Minimum amplitude in spectrogram in order to be considered a peak. Higher value could reduce number of fingerprints, but can negatively affect accuracy.
 
 
 ## Storing the fingerprints
@@ -84,8 +84,21 @@ As the initial trial, we decided to use file system to store the fingerprints, m
 
 ## Recognition
 
+This section will introduce when a new song is provided (either by music file or through microphone), how the system will match and recognize this song.
 
-[to be written]
+**1. Preprocessing.** Load the hash values and song information from the file into main memory and formulate a nested dictionary structure: {song_id, {hash_value, offset}}. We name this data structure as `lib`.
+
+**2. Fingerprinting of the audio.** We will re-use the module of fingerprinting to perform FFT in overlapping windows over the length of the song, extract peaks, and then form fingerprints `new_hash`.
+
+**3. Matching hash values.** Traverse the `lib` and for each song, we try to match the `new_hash` with the hash in the `lib`. We will select `top-k` matches in terms of matching count as the candidates. We also enforce a condition that the number of matchings should be more than 50% compared to the best matching to be considered as a `candidate`.
+
+**4. Aligning time offsets.** If there are more than one candidate, we will then consider the difference between the time offsets of the song in the library and in the new song. This step is needed due to the reason that the new song clip may not necessarily to start from the beginning. We need to examine the differences between offsets to make sure that the "rhythms" are matching. This step is illustrated in the following figure:
+
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Align_fingerprints.png" width="400">
+
+As shown in the Fig. 3, although the time-offsets of the hashes in the new song do not match the original library, their differences are matching. In addition, we also have two missing hash values in the new song, however, this will not have an impact to the alignment process.
+
+After these steps, we will pick the top-1 song that has the best match and the best alignment to be the returning result.
 
 
 ## Performance
