@@ -6,7 +6,6 @@ import time
 
 if __name__ == '__main__':
 
-    start = time.time()
     parser = argparse.ArgumentParser(description="MusicFinder: What is this song?")
     parser.add_argument('-f', '--f', nargs='*', 
         help='Fingerprint all audio files in a directory\n'
@@ -18,6 +17,9 @@ if __name__ == '__main__':
         help='Plot all fingerprints distribution.')
     args = parser.parse_args()
 	
+    # start timer
+    t0 = time.time()
+
     # create a MusicFinder instance
     mf = MusicFinder()
     if args.f:
@@ -37,21 +39,32 @@ if __name__ == '__main__':
 
         # Load all fingerprints
         mf.load_fingerprints()
-        print ("Fingerprints library loaded.")
+        t1 = time.time()
+        print ("Total time loading fingerprints: %.2f seconds." % (t1 - t0))
 
         while True:
-            file_name = input ("\nPlease type the path the song to be recognized (or type exit): ")
+            file_name = input ("\nPlease type the path of the song to be recognized (or type exit): ")
             if file_name.lower() == "exit":
                 break
 
             #file_name = args.r[0]
             #file_name = "Audios/Yesterday Once More.mp3"
 
-        	# Find best match
-            song_name = mf.recognize_file(file_name)
+            try:
+                t2 = time.time()
+                
+                # Find best match
+                song_name = mf.recognize_file(file_name)
+                
+                t3 = time.time()
+                
+                # Display song name
+                print ("Best match:", song_name, "total matching time: %.2f seconds" % (t3 - t2))
+            except Exception as e:
+                print ("Matching failed due to the following exception: ")
+                print (e)
 
-        	# Display song name
-            print ("Best match:", song_name)
+        	
     elif args.p:
         # Plot fingerprints distribution
 
@@ -61,7 +74,7 @@ if __name__ == '__main__':
 
 
     end = time.time()
-    print ("Total time elapsed %.2f seconds." % (end - start))
+    print ("Total time elapsed %.2f seconds." % (end - t0))
     sys.exit(0)
 
     

@@ -40,7 +40,7 @@ class FingerPrinter:
     '''
     def get_peaks_above_threshold(self, spectrum, threshold):
         
-        print ("    Finding peaks...")
+        #print ("    Finding peaks...")
         # Generate a binary structure for binary morphological operations.
         struct = morphology.generate_binary_structure(2, 1)
         neighborhood = morphology.iterate_structure(struct, RunParams.Default_Peak_Neighborhood_Size)
@@ -53,7 +53,7 @@ class FingerPrinter:
         # Boolean mask of spectrum with True at peaks
         peaks = peaks - eroded_background
 
-        print ("    Peaks extrated.")
+        #print ("    Peaks extrated.")
 
         # extract peaks
         peaks_extracted = spectrum[peaks]
@@ -63,7 +63,7 @@ class FingerPrinter:
         p = zip(i, j, peaks_extracted.flatten())
         peaks_filtered = [x for x in p if x[2] > threshold]
 
-        print ("    Number of peaks:", len(peaks_filtered))
+        #print ("    Number of peaks:", len(peaks_filtered))
         # get indices for frequency and time
         frequency_idx = [x[1] for x in peaks_filtered]
         time_idx      = [x[0] for x in peaks_filtered]

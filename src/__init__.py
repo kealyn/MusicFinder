@@ -85,6 +85,7 @@ class MusicFinder(object):
             print("  Channel %d/%d completed." % (number+1, channel_count))
             res_hash |= set(hashings_cur_channel)
 
+        print ("Hash count:", len(res_hash))
         return res_hash
 
     '''
@@ -93,13 +94,38 @@ class MusicFinder(object):
     def load_fingerprints(self, csv_file_name = RunParams.Default_Hash_File_Name):
         self.id_name, self.id_hash = self.HashingManager.read_from_file(csv_file_name)
         self.Recognizer.initialize_fingerprints_library(self.id_name, self.id_hash)
+        self.name_hash_count = self.compute_song_id_hash_count_mapping(self.id_name, self.id_hash)
         self.fingerprint_loaded = True
+
+        for name, count in self.name_hash_count.items():
+            print (name, ": ", count)
+        print ("Fingerprints library loaded.")
+
+    '''
+    Method that plots the distribution of the provided fingerprints
+
+    Params:
+      - id_name: mapping of {song_id, song_name}
+      - id_hash_fingerprints: mapping of {song_id, {hash, offset}}
+
+    Returns:
+      - name_hash_count: mapping of {song_name, hash_count}
+    '''
+    def compute_song_id_hash_count_mapping(self, id_name, id_hash_fingerprints):
+        # Convert to a mapping of {song_name, number of hash values}
+        name_hash_count = {}
+        for song_id, original_hash_mapping in id_hash_fingerprints.items():
+            name_hash_count[id_name[song_id]] = len(original_hash_mapping)
+        return name_hash_count
 
     '''
     API function that plots the distribution of all loaded fingerpritns
     '''
     def plot_all_fingerprints(self):
-        self.Plotter.plot_fingerprints_ditribution(self.id_name, self.id_hash)
+        if not self.fingerprint_loaded:
+            self.load_fingerprints()
+        self.Plotter.plot_fingerprints_ditribution(self.name_hash_count)
+
 
     '''
     Method that recognizes the given music file and return the name of the song 
@@ -110,11 +136,16 @@ class MusicFinder(object):
         if not self.fingerprint_loaded:
             self.load_fingerprints()
 
+        song_name, extension = os.path.splitext(os.path.basename(file_name))
+        
         # Convert given music to hash
         new_hash = self.record(file_name)
 
         # Find the best match of given the new hashing
-        song_name = self.Recognizer.find_song_name(new_hash)
+        song_name, candidates = self.Recognizer.find_song_name(new_hash)
+
+        # Plot the candidates distribution
+        self.Plotter.plot_candidates(song_name, len(new_hash), candidates)
 
         return song_name
 

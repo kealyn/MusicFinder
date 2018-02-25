@@ -22,7 +22,7 @@ class Recognizer(object):
         self.song_id_hash_mapping = id_hash
 
     '''
-    Test function
+    Unit test function
     '''
     def find_match(self, original_hash_set, new_hash_set):
         
@@ -33,7 +33,10 @@ class Recognizer(object):
 
         return self.find_match_from_mapping(new_hash_set, mapper)
 
-
+    '''
+    Method that counts the number of matchings of the hash values between the 
+    new hash set and the mapper library
+    '''
     def find_match_from_mapping(self, new_hash_set, mapper):
         
         res = 0
@@ -45,19 +48,29 @@ class Recognizer(object):
 
         return res
 
+    '''
+    Method that tries to match the provided the hash set with the library
+    and returns the name of the song with best match
+
+    Returns:
+      - Song name of the best match
+      - All candidates that may match the given song. {song_name, matching_count}
+    '''
     def find_song_name(self, new_hash_set):
 
         max_count = 0
         best_song_id = -1
+        candidates = {}
         for song_id, original_hash_mapping in self.song_id_hash_mapping.items():
             cur_count = self.find_match_from_mapping(new_hash_set, original_hash_mapping)
-            print (self.song_id_name_mapping[song_id], "matching:", cur_count)
+            #print (self.song_id_name_mapping[song_id], "matching:", cur_count)
             if cur_count > max_count:
                 max_count = cur_count
                 best_song_id = song_id
+                candidates[self.song_id_name_mapping[best_song_id]] = cur_count
                 
 
         if best_song_id != -1:
-            return self.song_id_name_mapping[best_song_id]
+            return self.song_id_name_mapping[best_song_id], candidates
         else:
-            return "No match."
+            return "No match.", candidates
