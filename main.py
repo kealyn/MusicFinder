@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
 
     end = time.time()
-    print ("Total time elapsed", (end - start), "seconds.")
+    print ("Total time elapsed %.2f seconds." % (end - start))
     sys.exit(0)
 
     

@@ -94,7 +94,6 @@ class MusicFinder(object):
         self.id_name, self.id_hash = self.HashingManager.read_from_file(csv_file_name)
         self.Recognizer.initialize_fingerprints_library(self.id_name, self.id_hash)
         self.fingerprint_loaded = True
-        print (self.id_name)
 
     '''
     API function that plots the distribution of all loaded fingerpritns

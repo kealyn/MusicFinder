@@ -54,12 +54,12 @@ class Plotter(object):
         print ("Plotting distribution of fingerprints...")
 
 
-        #plt.rc('font', family='Microsoft YaHei')
+        #
 
         # Convert to a mapping of {song_name, number of hash values}
         name_hash_count = {}
         for song_id, original_hash_mapping in id_hash_fingerprints.items():
-            name_hash_count[song_id] = len(original_hash_mapping)
+            name_hash_count[id_name[song_id]] = len(original_hash_mapping)
 
         # Prepare data for plot
         keys = list(name_hash_count.keys())
@@ -69,16 +69,26 @@ class Plotter(object):
 
         names = [x for _,x in sorted(zip(values,keys))]
         counts = sorted(values)
-        print (names)
         
         # position of bar
-        y_pos = np.arange(len(names))
+        bar_width = 10
+        y_pos = np.arange(len(names)) * (bar_width + 1)
+        counts = np.array(counts)
+
+        mask1 = counts < 20000
+        mask2 = counts >= 20000
+
+        plt.rcParams["figure.figsize"] = [16,40]
+        plt.rcParams.update({'font.size': 32})
+        plt.rc('font', family='Microsoft YaHei')
+        plt.barh(y_pos[mask1], counts[mask1], color = 'blue', height=bar_width, align='center')
+        plt.barh(y_pos[mask2], counts[mask2], color = 'purple', height=bar_width, align='center')
 
         # Plot distribution
-        plt.barh(y_pos, counts, align='center', alpha=0.5)
-        plt.yticks(y_pos, names)
+        #plt.barh(y_pos, counts, height=bar_width, align='center')
+        plt.yticks(y_pos, names,rotation=45)
         plt.xlabel('Number of fingerprints')
         plt.title('Distribution of fingerprints')
-        plt.savefig("Plots/Fingerprints_distribtion.png")
+        plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 600)
 
         return

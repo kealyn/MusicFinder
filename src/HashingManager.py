@@ -48,7 +48,7 @@ class HashingManager(object):
 
         print ("Loading fingerprints from file", file_name)
         
-        df = pd.read_csv(file_name, header=0)
+        df = pd.read_csv(file_name, header=0, nrows=200000)
 
         #print (df.head(20))
 
@@ -56,6 +56,12 @@ class HashingManager(object):
         song_id_hash_mapping = {}
         for _, row in df.iterrows():
             song_id = row[FILE_ID]
+
+            # Skip header
+            try:
+                i = int(song_id)
+            except ValueError:
+                continue
 
             # Create a song_id and song_name mapping
             song_id_name_mapping[song_id] = row[FILE_NAME]
