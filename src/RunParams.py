@@ -27,3 +27,7 @@ Default_Audio_Limit = -1
 # default file name that stores all hash values
 Default_Hash_File_Name = "Hash_Library.csv"
 
+# The number of matchings should be more than this threshold 
+# compared to the best matching to be considered as a `candidate`.
+Default_Candidate_Threshold_In_Percentage = 0.5
+

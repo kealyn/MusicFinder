@@ -1,6 +1,7 @@
 # start imports
 import numpy as np
 import os, sys, inspect
+import RunParams
 
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
 if cmd_folder not in sys.path:
@@ -69,6 +70,9 @@ class Recognizer(object):
                 best_song_id = song_id
                 candidates[self.song_id_name_mapping[best_song_id]] = cur_count
                 
+        # Post processing to filter out the candidates that are not qualified
+        candidates = dict((k, v) for k, v in candidates.items() \
+            if v >= max_count * RunParams.Default_Candidate_Threshold_In_Percentage)
 
         if best_song_id != -1:
             return self.song_id_name_mapping[best_song_id], candidates
