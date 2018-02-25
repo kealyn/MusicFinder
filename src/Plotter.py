@@ -78,7 +78,7 @@ class Plotter(object):
         mask1 = counts < 20000
         mask2 = counts >= 20000
 
-        plt.rcParams["figure.figsize"] = [16,40]
+        plt.rcParams["figure.figsize"] = [10,30]
         plt.rcParams.update({'font.size': 32})
         plt.rc('font', family='Microsoft YaHei')
         plt.barh(y_pos[mask1], counts[mask1], color = 'blue', height=bar_width, align='center')
@@ -86,9 +86,10 @@ class Plotter(object):
 
         # Plot distribution
         #plt.barh(y_pos, counts, height=bar_width, align='center')
-        plt.yticks(y_pos, names,rotation=45)
+        plt.yticks(y_pos, names,rotation=45, size=8)
         plt.xlabel('Number of fingerprints')
         plt.title('Distribution of fingerprints')
-        plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 600)
+        plt.subplots_adjust(left=0.2, top=0.8)
+        plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 400, bbox_inches='tight')
 
         return

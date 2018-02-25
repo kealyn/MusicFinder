@@ -12,10 +12,8 @@ if __name__ == '__main__':
         help='Fingerprint all audio files in a directory\n'
              'Usages:\n'
              '--f /path/to/directory [extension]\n')
-    parser.add_argument('-r', '--r', nargs=1, 
-        help='Recognize given music file\n'
-             'Usage:\n'
-             '--r "/path/to/file" \n')
+    parser.add_argument('-r', '--r', action="store_true", dest="r", 
+        help='Loading fingerprints and preparing for recognition')
     parser.add_argument('-p', '--p', action="store_true", dest="p",
         help='Plot all fingerprints distribution.')
     args = parser.parse_args()
@@ -36,17 +34,24 @@ if __name__ == '__main__':
         mf.record_fingerprints_directory(directory, ["." + extension])
     elif args.r:
     	# Recognitions
-        #file_name = args.r[0]
-        file_name = "Audios/Yesterday Once More.mp3"
 
-    	# Load all fingerprints
+        # Load all fingerprints
         mf.load_fingerprints()
+        print ("Fingerprints library loaded.")
 
-    	# Find best match
-        song_name = mf.recognize_file(file_name)
+        while True:
+            file_name = input ("\nPlease type the path the song to be recognized (or type exit): ")
+            if file_name.lower() == "exit":
+                break
 
-    	# Display song name
-        print ("Best match:", song_name)
+            #file_name = args.r[0]
+            #file_name = "Audios/Yesterday Once More.mp3"
+
+        	# Find best match
+            song_name = mf.recognize_file(file_name)
+
+        	# Display song name
+            print ("Best match:", song_name)
     elif args.p:
         # Plot fingerprints distribution
 
