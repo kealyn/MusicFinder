@@ -38,7 +38,6 @@ class HashingManager(object):
         # Data frame created with the hash list
         df = pd.DataFrame(hashlist, columns=[FILE_ID, FILE_NAME, HASHVALUE, OFFSET])
 
-        print (df)
         # Dump to csv file
         df.to_csv(RunParams.Default_Hash_File_Name, mode='a', sep=',', encoding='utf-8', index=False, header = [FILE_ID, FILE_NAME, HASHVALUE, OFFSET])
 

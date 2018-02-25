@@ -79,11 +79,11 @@ Unit test.
 
 
 
-Testing dataset: 68 songs in mp3 extension. Sampling rate: 44100 Hz.
+Testing dataset: 100 songs in mp3 extension. Sampling rate: 44100 Hz.
 
 [fingerprint distribution here]
 
-Total number of fingerprints: 839,765. Hash library size 67 MB.
+Total number of fingerprints: 1.3 million. Hash library size 99.1 MB.
 
 
 

@@ -1,6 +1,7 @@
 
 import os
 import sys
+
 import src.RunParams as RunParams
 import src.Decoder as Decoder
 import src.FingerPrinter as FingerPrinter
@@ -67,7 +68,7 @@ class MusicFinder(object):
     def record(self, filename, limit=-1):
 
         # Read channel samples and frame rate from the file
-        print ("Step 1: Reading data from file ", filename, "with limit = ", limit)
+        print ("Step 1: Reading data from file", filename, "with limit =", limit)
         channels, fs = self.Decoder.read(filename, limit)
 
         # Rashing result

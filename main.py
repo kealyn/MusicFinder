@@ -2,9 +2,11 @@
 from src import MusicFinder
 
 import argparse,sys
+import time
 
 if __name__ == '__main__':
 
+    start = time.time()
     parser = argparse.ArgumentParser(description="MusicFinder: What is this song?")
     parser.add_argument('-f', '--f', nargs='*', 
         help='Fingerprint all audio files in a directory\n'
@@ -53,6 +55,8 @@ if __name__ == '__main__':
         mf.plot_all_fingerprints()
 
 
+    end = time.time()
+    print ("Total time elapsed", (end - start), "seconds.")
     sys.exit(0)
 
     
