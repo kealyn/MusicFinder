@@ -15,9 +15,9 @@ if cmd_subfolder not in sys.path:
 # end imports
 
 
-'''
+"""
 Class that is mainly responsible for decoding an audio file
-'''
+"""
 class Decoder(object):
 
     '''
