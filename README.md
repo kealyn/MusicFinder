@@ -64,24 +64,22 @@ To accurately identify a peak, it is important to consider its neighborhood to d
 
 **Step 3.** Subtract `M` by `B` will yield the peaks `P0`.
 
-**Step 4.** To adjust the number of fingerprints, a threshold `Default_Peak_Threshold` is applied to `P0` and finally we get the desired peaks as `P`. 
+**Step 4.** To adjust the number of fingerprints, a threshold `Default_Peak_Threshold<sup>i</sup>` is applied to `P0` and finally we get the desired peaks as `P`. 
 
-```
-Default_Peak_Threshold: Minimum amplitude in spectrogram in order to be considered a peak. Higher value could reduce number of fingerprints, but can negatively affect accuracy.
-```
-
+<sup>i</sup> `Default_Peak_Threshold`: Minimum amplitude in spectrogram in order to be considered a peak. Higher value could reduce number of fingerprints, but can negatively affect accuracy.
 
 
 ## Storing the fingerprints
 
-The above-mentioned combinatorial hashing leads to a good amount of hash values: a hash value for each peak point.
+The above-mentioned combinatorial hashing leads to a good amount of hash values: a hash value for each peak point. However, hash values by themselves are not enough to identify a specific rhythm, we need to store the correct order of them, i.e. time dimension.
 
-[to be written]
+As we know, each song is consist of multiple hash values, and each hash value corresponds to a time offset. In addition, it also has some metadata such as id and name. There are different ways to store such data:
+- **Database.** To avoid storing redundant information, we propose to follow [3NF](https://en.wikipedia.org/wiki/Third_normal_form) and create two tables: song table and hash table. Song id will be used as the primary key for the song table, as well as the foreign key for the hash table. The benefit of using database is that database could help build indexes on the data and help increase the performance; in the meantime, we also get database built-in features, such as concurrent processing, and query optimization. 
+- **File.** Storing in file is easier from an API perspective. It is also flexible and does not dependent on other libraries (such as database APIs). However, it may lead to higher space consumption and worse I/O performance.
+- **In-memory data grid.** If we have a server with dedicated memory space, we could build an in-memory cache that helps cache and retrieve data through simple `put` and `get` APIs. Apache ignite is an example. However, it is required that such a server to be stable. Moreover, there are quite a number of steps that could set up such a service.
 
-However, hash values by themselves are not enough to identify a specific rhythm, we need to store the correct order of them, i.e. time dimension.
 
-[csv format of fingerprints]
-
+As the initial trial, we decided to use file system to store the fingerprints, more specifically, `.csv` files. The header of the file is consist of [`song_id`, `song_name`, `hash_value`, `offset`]. Note that there can be thousands of hash values for one song, essentially we will store the song_id and song_name thousands of times. However, it does not prevent us from proving the concept.
 
 
 ## Recognition
