@@ -81,7 +81,7 @@ Unit test.
 
 Testing dataset: 100 songs in mp3 extension. Sampling rate: 44100 Hz.
 
-[fingerprint distribution here]
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Plots/Fingerprints_distribtion.png" width="600">
 
 Total number of fingerprints: 1.3 million. Hash library size 99.1 MB.
 
