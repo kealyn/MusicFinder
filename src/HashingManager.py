@@ -48,7 +48,7 @@ class HashingManager(object):
 
         print ("Loading fingerprints from file", file_name)
         
-        df = pd.read_csv(file_name, header=0)
+        df = pd.read_csv(file_name, header=0, nrows=20000)
 
         #print (df.head(20))
 

@@ -94,7 +94,7 @@ This section will introduce when a new song is provided (either by music file or
 
 **4. Aligning time offsets.** If there are more than one candidate, we will then consider the difference between the time offsets of the song in the library and in the new song. This step is needed due to the reason that the new song clip may not necessarily to start from the beginning. We need to examine the differences between offsets to make sure that the "rhythms" are matching. This step is illustrated in the following figure:
 
-<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Align_fingerprints.png" width="400">
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Align_fingerprints.png" width="700">
 
 As shown in the Fig. 3, although the time-offsets of the hashes in the new song do not match the original library, their differences are matching. In addition, we also have two missing hash values in the new song, however, this will not have an impact to the alignment process.
 
@@ -103,26 +103,46 @@ After these steps, we will pick the top-1 song that has the best match and the b
 
 ## Performance
 
-Unit test.
+The empirical setup can be found in the following table:
+
+| Item | Description |
+| --- | --- |
+| Number of songs | 100 |
+| Sampling rate | 44100 Hz |
+| Total fingerprints | 1.3 million |
+| Library file size | 99.3 MB |
 
 
-
-Testing dataset: 100 songs in mp3 extension. Sampling rate: 44100 Hz.
+The following figure depicts the number of fingerprints w.r.t. each song in the library:
 
 <img src="https://github.com/kealyn/MusicFinder/blob/master/Plots/Fingerprints_distribtion.png" width="800">
 
-Total number of fingerprints: 1.3 million. Hash library size 99.1 MB.
+From the data, it suggests that the number of collected fingerprints vary from one song to another. The largest number of fingerprints for one song is 32,906 while the least number is 1,551. 
+
+Next, we will perform three set of experiments.
+
+The first set of experiment is to recognize local music files. For this purpose, we have randomly picked 10 songs out of the 100 songs and try to find the best match. We only feed in the system with the first 10 seconds of the song. Here are the results:
+
+| Time limit (s) | Encoding time (s) | Recognition time | Recognition rate |
+| --- | --- | --- | --- |
+| 10 | 3.18 (avg) | 0.09 (avg) | 100% |
+
+It is shown that all of the testing songs can be recognized within 10 seconds.
+
+The second set of experiment is to recognize songs from the microphone. Again, we have randomly chosen 10 songs to be played through the microphone. In addition, we also put some extra noise while playing. Here are the results:
+
+| Noise level |Time limit (s) | Encoding time (s) | Recognition time | Recognition rate |
+| --- |--- | --- | --- | --- |
+| Normal | 10 | 3.18 (avg) | 0.09 (avg) | 100% |
+| Extra  | 10 | 
 
 
+The third set of experiment is to give a new song that does not appear in the song library.
 
-[for a particular song, print the matching distribution]
-
-
-[to be written, original song vs microphone vs additive noise]
 
 
 ## Enhancements
-- **Fingerprint library service**: This can save the loading time of fingerprints prior to recognization.
+- **Fingerprint library service**: This can save the loading time of fingerprints prior to recognition.
 - **A simple GUI**
 - **"Pseudo" voice recognition:** Add audio samples of words, phrases, and sentences so that MF could also identify certain commands, such as "turn on the TV". 
 - **Voice recognition:** The voice recognition mentioned in the above point is very limited and cannot process natural languages. For example, MF will not find the similarities between "turn off the computer" and "could you please shut down the computer". To make MF equip with voice recognition, neural network models need to be integrated and properly trained.

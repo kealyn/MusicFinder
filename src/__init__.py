@@ -1,6 +1,7 @@
 
 import os
 import sys
+import time
 
 import src.RunParams as RunParams
 import src.Decoder as Decoder
@@ -8,6 +9,7 @@ import src.FingerPrinter as FingerPrinter
 import src.Recognizer as Recognizer
 import src.HashingManager as HashingManager
 import src.Plotter as Plotter
+import src.MicRecorder as MicRecorder
 
 '''
 Class body for MusicFinder. It defines the constructor and member functions.
@@ -25,6 +27,7 @@ class MusicFinder(object):
         self.Recognizer = Recognizer.Recognizer()
         self.HashingManager = HashingManager.HashingManager()
         self.Plotter = Plotter.Plotter()
+        self.MicRecorder = MicRecorder.MicRecorder()
 
     '''
     Function that records fingerprints of all files with given extension in the given path
@@ -131,18 +134,37 @@ class MusicFinder(object):
     Method that recognizes the given music file and return the name of the song 
     that is the best match from the library
     '''
-    def recognize_file(self, file_name):
+    def recognize_file(self, file_name, time_limit=-1):
 
         if not self.fingerprint_loaded:
             self.load_fingerprints()
 
-        song_name, extension = os.path.splitext(os.path.basename(file_name))
-        
-        # Convert given music to hash
-        new_hash = self.record(file_name)
+        t1 = time.time()
+        if (file_name.lower() == "mic"):
+            # Take input from microphone
+            data = self.MicRecorder.get_recording(time_limit)
+
+            new_hash = set()
+            for samples in data:
+                cur_hash, spectrum, time_idx, frequency_idx, chan_number \
+                    = self.FingerPrinter.fingerprint(1, samples, RunParams.Default_Frequency_Rate)
+                new_hash |= set(cur_hash)
+                
+            print ("Hash count:", len(new_hash))
+        else:
+
+            song_name, extension = os.path.splitext(os.path.basename(file_name))
+
+            # Convert given music to hash
+            new_hash = self.record(file_name, time_limit)
+
+        t2 = time.time()
+        print ("Encoding time in seconds: %.2f" % (t2 - t1))
 
         # Find the best match of given the new hashing
         song_name, candidates = self.Recognizer.find_song_name(new_hash)
+        t3 = time.time()
+        print ("Matching time in seconds: %.2f" % (t3 - t2))
 
         # Plot the candidates distribution
         self.Plotter.plot_candidates(song_name, len(new_hash), candidates)

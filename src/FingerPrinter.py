@@ -5,6 +5,7 @@ import hashlib
 import RunParams
 import scipy.ndimage.filters as filters
 import scipy.ndimage.morphology as morphology
+from operator import itemgetter
 
 '''
 Class that is responsible for computing finger prints from the channel samples
@@ -22,10 +23,11 @@ class FingerPrinter:
     locally sensitive hashes.
     '''
     def fingerprint(self, chan_number, channel_samples, fs):
+
         # ToDo: To be completed
-            # Step 1: FFT the signal and extract frequency components
+        # Step 1: FFT the signal and extract frequency components
         spectrum = self.FFT.run(channel_samples, fs)
-		
+
         # Step 2: Find peak points
         # find local maxima as peak points
         peaks, time_idx, frequency_idx = self.get_peaks_above_threshold(spectrum, threshold=RunParams.Default_Peak_Threshold)
@@ -78,7 +80,11 @@ class FingerPrinter:
     Returns:
       - List structure of (hash, offset).
     '''
-    def generate_hashes(self, peaks):
+    def generate_hashes(self, peaks_unsorted):
+
+        # Sort peaks based on time offset
+        peaks = sorted(peaks_unsorted, key=itemgetter(1))
+
         for i in range(len(peaks)):
             freq1 = peaks[i][0]
             t1 = peaks[i][1]
@@ -88,14 +94,19 @@ class FingerPrinter:
                 if (i + j) < len(peaks):
                     freq2 = peaks[i + j][0]
                     t2 = peaks[i + j][1]
-                    t_delta += t2 - t1
-                    freq_delta += math.fabs(freq2 - freq1)
+                    t_delta = t2 - t1
+                    freq_delta = math.fabs(freq2 - freq1)
 
-                # Filter time and frequency difference within a reasonable range
-                # TODO: calibration may be needed
-                # 5000 hz of freq difference
-                # 10 ms of time difference
-                if freq_delta > 0 and freq_delta <= 5000 and t_delta > 0 and t_delta <= 441:         
-                    line = "%s|%s|%s" % (str(freq1), str(freq_delta), str(t_delta))
-                    h = hashlib.sha1(line.encode('utf-8'))
-                    yield (h.hexdigest(), t1)
+                    # Filter time and frequency difference within a reasonable range
+                    # TODO: calibration may be needed
+                    # 5000 hz of freq difference
+                    # 10 ms of time difference
+                    #if freq_delta > 0 and freq_delta <= 5000 and t_delta > 0 and t_delta <= 200:         
+                    #    line = "%s|%s|%s" % (str(freq1), str(freq_delta), str(t_delta))
+                    #    h = hashlib.sha1(line.encode('utf-8'))
+                    #    yield (h.hexdigest(), t1)
+
+                    if t_delta >= 0 and t_delta <= 200:         
+                        line = "%s|%s|%s" % (str(freq1), str(freq2), str(t_delta))
+                        h = hashlib.sha1(line.encode('utf-8'))
+                        yield (h.hexdigest(), t1)

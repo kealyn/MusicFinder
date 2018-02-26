@@ -66,7 +66,7 @@ class Plotter(object):
         mask2 = counts >= 20000
 
         plt.rcParams["figure.figsize"] = [10,30]
-        plt.rcParams.update({'font.size': 20})
+        plt.rcParams.update({'font.size': 18})
         plt.rc('font', family='Microsoft YaHei')
         plt.barh(y_pos[mask1], counts[mask1], color = 'blue', height=bar_width, align='center')
         plt.barh(y_pos[mask2], counts[mask2], color = 'purple', height=bar_width, align='center')
@@ -74,7 +74,8 @@ class Plotter(object):
         # Plot distribution
         plt.yticks(y_pos, names,rotation=45, size=8)
         plt.xlabel('Number of fingerprints')
-        plt.title('Distribution of fingerprints across songs')
+        plt.grid(color='gray', linestyle='dashed')
+        plt.title('Fig. 4. Distribution of fingerprints across songs')
         plt.subplots_adjust(left=0.2, top=0.8)
         plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 400, bbox_inches='tight')
 
@@ -113,7 +114,7 @@ class Plotter(object):
         plt.title('Candidate songs')
         plt.subplots_adjust(bottom=0.2, top=0.8)
         plt.savefig("Plots/"+song_name+"_candidates.png", dpi = 400, bbox_inches='tight')
-        plt.show()
+        #plt.show()
 
         return
 
