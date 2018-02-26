@@ -109,7 +109,7 @@ class Recognizer(object):
         # Traverse 
         prev_new = 0
         prev_best = 0
-        for k, v in new_hash_set:
+        for k, v in new_hash_set.items():
             if k in best_match_hash_set:
                 cur_new = v
                 cur_best = best_match_hash_set[k]

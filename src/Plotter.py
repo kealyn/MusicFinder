@@ -62,8 +62,8 @@ class Plotter(object):
         y_pos = np.arange(len(names)) * (bar_width + 1)
         counts = np.array(counts)
 
-        mask1 = counts < 20000
-        mask2 = counts >= 20000
+        mask1 = counts < 50000
+        mask2 = counts >= 50000
 
         plt.rcParams["figure.figsize"] = [10,30]
         plt.rcParams.update({'font.size': 18})

@@ -123,7 +123,7 @@ The following figure depicts the number of fingerprints w.r.t. each song in the 
 
 <img src="https://github.com/kealyn/MusicFinder/blob/master/Plots/Fingerprints_distribtion.png" width="800">
 
-From the data, it suggests that the number of collected fingerprints vary from one song to another. The largest number of fingerprints for one song is 32,906 while the least number is 1,551. 
+From the data, it suggests that the number of collected fingerprints vary from one song to another. The largest number of fingerprints for one song is 77,662 while the least number is 12,225. 
 
 Next, we will perform three set of experiments.
 
