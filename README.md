@@ -5,6 +5,12 @@ Inspired by dejavu project, here I build and present the workflow of MusicFinder
 
 ## Music fingerprinting
 
+Overall system structure can be found in the following figure:
+
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/System_architecture.png" width="800">
+
+
+
 ### FFT: from time domain to frequency domain
 
 As a first step, we need to extract useful information from the music that could help identify it. For this purpose, we take help from [Fast Fourier Transform](https://en.wikipedia.org/wiki/Fast_Fourier_transform). 
@@ -94,7 +100,7 @@ This section will introduce when a new song is provided (either by music file or
 
 **4. Aligning time offsets.** If there are more than one candidate, we will then consider the difference between the time offsets of the song in the library and in the new song. This step is needed due to the reason that the new song clip may not necessarily to start from the beginning. We need to examine the differences between offsets to make sure that the "rhythms" are matching. This step is illustrated in the following figure:
 
-<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Align_fingerprints.png" width="700">
+<img src="https://github.com/kealyn/MusicFinder/blob/master/Figures/Align_fingerprints.png" width="800">
 
 As shown in the Fig. 3, although the time-offsets of the hashes in the new song do not match the original library, their differences are matching. In addition, we also have two missing hash values in the new song, however, this will not have an impact to the alignment process.
 
@@ -133,8 +139,8 @@ The second set of experiment is to recognize songs from the microphone. Again, w
 
 | Noise level |Time limit (s) | Encoding time (s) | Recognition time | Recognition rate |
 | --- |--- | --- | --- | --- |
-| Normal | 10 | 3.18 (avg) | 0.09 (avg) | 100% |
-| Extra  | 10 | 
+| Normal | 30 | 3.18 (avg) | 0.09 (avg) | 100% |
+| Extra  |  | 
 
 
 The third set of experiment is to give a new song that does not appear in the song library.
