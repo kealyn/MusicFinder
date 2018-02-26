@@ -9,7 +9,7 @@ Default_Overlap_Ratio = 0.5
 Default_Frequency_Rate = 44100
 
 # default peak threshold
-Default_Peak_Threshold = 10
+Default_Peak_Threshold = 5
 
 # default number of cells around an amplitude peak in the spectrogram 
 # in order for the peak to be considered as a peak (rather than noise)

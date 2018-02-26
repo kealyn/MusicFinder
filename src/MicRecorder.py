@@ -36,14 +36,8 @@ class MicRecorder(object):
     '''
     Method that starts the recording
     '''
-    def start_recording(self, channels=unParams.Default_Num_Channels,
-                        samplerate=RunParams.Default_Frequency_Rate,
-                        chunksize=default_chunksize):
+    def start_recording(self):
         print ("Recoding started ...")
-        self.chunksize = chunksize
-        self.channels = channels
-        self.recorded = False
-        self.samplerate = samplerate
 
         if self.stream:
             self.stream.stop_stream()
@@ -52,14 +46,14 @@ class MicRecorder(object):
         # Open stream
         self.stream = self.audio.open(
             format=pyaudio.paInt16,
-            channels=channels,
-            rate=samplerate,
+            channels=self.channels,
+            rate=self.samplerate,
             input=True,
-            frames_per_buffer=chunksize,
+            frames_per_buffer=self.chunksize,
         )
 
         # Collect data for this chunk
-        self.data = [[] for i in range(channels)]
+        self.data = [[] for i in range(self.channels)]
 
     '''
     Method that processes the recordings from the stream and adds to the data
