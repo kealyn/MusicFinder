@@ -34,3 +34,6 @@ Default_Candidate_Threshold_In_Percentage = 0.5
 # The ratio of fingerprints that are aligned between the test song and the best match
 Default_Alignment_Ratio = 0.5
 
+# Default number of channels in an audio file or recording
+Default_Num_Channels = 2
+
