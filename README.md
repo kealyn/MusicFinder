@@ -115,8 +115,8 @@ The empirical setup can be found in the following table:
 | --- | --- |
 | Number of songs | 100 |
 | Sampling rate | 44100 Hz |
-| Total fingerprints | 1.3 million |
-| Library file size | 99.3 MB |
+| Total fingerprints | 5.5 million |
+| Library file size | 420.2 MB |
 
 
 The following figure depicts the number of fingerprints w.r.t. each song in the library:
@@ -138,9 +138,9 @@ It is shown that all of the testing songs can be recognized within 10 seconds.
 The second set of experiment is to recognize songs from the microphone. Again, we have randomly chosen 10 songs to be played through the microphone. In addition, we also put some extra noise while playing. Here are the results:
 
 | Noise level |Time limit (s) | Encoding time (s) | Recognition time | Recognition rate |
-| --- |--- | --- | --- | --- |
-| Normal | 30 | 3.18 (avg) | 0.09 (avg) | 100% |
-| Extra  |  | 
+| ---    |--- | --- | --- | --- |
+| Normal |    |     |     |     |
+| Extra  |    |     |     |     |
 
 
 The third set of experiment is to give a new song that does not appear in the song library.
