@@ -36,6 +36,9 @@ class Plotter(object):
             ax.set_title("Spectrogram_channel_" + str(chan_number))
             plt.gca().invert_yaxis()
             plt.savefig("Plots/Channel_"+str(chan_number)+".png")
+            plt.clf()
+            plt.cla()
+            plt.close()
             print ("    Plotting peaks for channel", chan_number, "completed.")
 
     '''

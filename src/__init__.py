@@ -63,6 +63,17 @@ class MusicFinder(object):
 
             file_id += 1
 
+    '''
+    Method that records fingerprints from microphone
+    '''
+    def record_fingerprints_mic(self):
+        # Take input from microphone
+        print ("Step 1: Reading data from microphone with limit =", RunParams.Default_Audio_Limit)
+        channels = self.MicRecorder.get_recording(RunParams.Default_Audio_Limit)
+
+        new_hash = self.get_hash_from_channels(channels)
+        
+        print ("Hash count:", len(new_hash))
 
 
     '''
@@ -74,21 +85,24 @@ class MusicFinder(object):
         print ("Step 1: Reading data from file", filename, "with limit =", limit)
         channels, fs = self.Decoder.read(filename, limit)
 
+        print ("Step 2: Encoding channel data")
+        res_hash = self.get_hash_from_channels(channels)
+        print ("Hash count:", len(res_hash))
+        return res_hash
+
+    def get_hash_from_channels(self, channels):
+
         # Rashing result
         res_hash = set()
         channel_count = len(channels)
-
-        print ("Step 2: Encoding channel data")
         for number, channel in enumerate(channels):
             print("  Channel %d/%d started..." % (number+1, channel_count))
             hashings_cur_channel, spectrum, time_idx, frequency_idx, chan_number \
-                = self.FingerPrinter.fingerprint(number+1, channel, fs=fs)
+                = self.FingerPrinter.fingerprint(number+1, channel, fs=RunParams.Default_Frequency_Rate)
             # Plot the peaks (when flag is set to True)
             self.Plotter.plot_spectrum(spectrum, time_idx, frequency_idx, chan_number)
             print("  Channel %d/%d completed." % (number+1, channel_count))
             res_hash |= set(hashings_cur_channel)
-
-        print ("Hash count:", len(res_hash))
         return res_hash
 
     '''
@@ -142,14 +156,10 @@ class MusicFinder(object):
         t1 = time.time()
         if (file_name.lower() == "mic"):
             # Take input from microphone
-            data = self.MicRecorder.get_recording(time_limit)
+            channels = self.MicRecorder.get_recording(time_limit)
 
-            new_hash = set()
-            for samples in data:
-                cur_hash, spectrum, time_idx, frequency_idx, chan_number \
-                    = self.FingerPrinter.fingerprint(1, samples, RunParams.Default_Frequency_Rate)
-                new_hash |= set(cur_hash)
-                
+            new_hash = self.get_hash_from_channels(channels)
+            
             print ("Hash count:", len(new_hash))
         else:
 

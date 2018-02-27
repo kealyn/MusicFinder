@@ -139,8 +139,8 @@ The second set of experiment is to recognize songs from the microphone. Again, w
 
 | Noise level |Time limit (s) | Encoding time (s) | Recognition time | Recognition rate |
 | ---    |--- | --- | --- | --- |
-| Normal |    |     |     |     |
-| Extra  |    |     |     |     |
+| Normal |  N/A  |  N/A   |  N/A   |  N/A   |
+| Extra  |  N/A  |  N/A   |  N/A   |  N/A   |
 
 
 The third set of experiment is to give a new song that does not appear in the song library.

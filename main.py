@@ -28,14 +28,17 @@ if __name__ == '__main__':
         # Fingerprint all files in a directory
         directory = args.f[0]
 
-        if len(args.f) == 2:
-            extension = args.f[1]
+        if directory.lower() == "mic":
+            mf.record_fingerprints_mic()
         else:
-            extension = 'mp3'
-        print("Fingerprinting all .%s files in the directory: %s" % (extension, directory))
+            if len(args.f) == 2:
+                extension = args.f[1]
+            else:
+                extension = 'mp3'
+            print("Fingerprinting all .%s files in the directory: %s" % (extension, directory))
 
-    	# Fingerprint all the files with given extension in the directory
-        mf.record_fingerprints_directory(directory, ["." + extension])
+        	# Fingerprint all the files with given extension in the directory
+            mf.record_fingerprints_directory(directory, ["." + extension])
     elif args.r:
     	# Recognitions
 
