@@ -46,13 +46,13 @@ if __name__ == '__main__':
 
         while True:
 
-            print ("---------------------------------------------------------------")
+            print ("-------------------------------------------------------------------------")
             print ("Choose from the following options:")
-            print ("Option 1: type print to print the fingerprints distribution.")
-            print ("Option 2: type mic to recognize a song from microphone.")
-            print ("Option 3: type the path of the song to be recognized.")
-            print ("Option 4: type exit to exit the program.")
-            print ("---------------------------------------------------------------")
+            print ("Option 1: type `print`            to print the fingerprints distribution.")
+            print ("Option 2: type `mic`              to recognize a song from microphone.")
+            print ("Option 3: type `path/to/the/song` to be recognized.")
+            print ("Option 4: type `exit`             to exit the program.")
+            print ("-------------------------------------------------------------------------")
             file_name = input ("\nYour input:")
             if file_name.lower() == "exit":
                 break
