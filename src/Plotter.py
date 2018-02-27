@@ -79,6 +79,9 @@ class Plotter(object):
         plt.subplots_adjust(left=0.2, top=0.8)
         plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 400, bbox_inches='tight')
 
+        plt.clf()
+        plt.cla()
+        plt.close()
         print ("Plotting saved to Plots/Fingerprints_distribtion.png")
         return
 
@@ -121,8 +124,11 @@ class Plotter(object):
         plt.title('Candidate songs')
         plt.subplots_adjust(bottom=0.2, top=0.8)
         plt.savefig("Plots/"+song_name+"_candidates.png", dpi = 400, bbox_inches='tight')
+        print ("Candidates saved to Plots/"+song_name+"_candidates.png")
         #plt.show()
-
+        plt.clf()
+        plt.cla()
+        plt.close()
         return
 
 
