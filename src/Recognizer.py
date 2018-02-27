@@ -111,8 +111,8 @@ class Recognizer(object):
         prev_best = 0
         for k, v in new_hash_set.items():
             if k in best_match_hash_set:
-                cur_new = v
-                cur_best = best_match_hash_set[k]
+                cur_new = int(v)
+                cur_best = int(best_match_hash_set[k])
                 if (cur_new - prev_new == cur_best - prev_best):
                     count += 1
                 prev_new = cur_new

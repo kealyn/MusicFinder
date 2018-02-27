@@ -4,17 +4,19 @@ from src import MusicFinder
 import argparse,sys
 import time
 
+from argparse import RawTextHelpFormatter
+
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description="MusicFinder: What is this song?")
-    parser.add_argument('-f', '--f', nargs='*', 
+    parser = argparse.ArgumentParser(description="MusicFinder: What is this song?",
+        formatter_class=RawTextHelpFormatter)
+    parser.add_argument('-f', '--f', nargs=1, 
         help='Fingerprint all audio files in a directory\n'
-             'Usages:\n'
-             '--f /path/to/directory [extension]\n')
+             'Usages: --f /path/to/directory [extension]\n')
     parser.add_argument('-r', '--r', action="store_true", dest="r", 
         help='Loading fingerprints and preparing for recognition')
-    parser.add_argument('-p', '--p', action="store_true", dest="p",
-        help='Plot all fingerprints distribution.')
+    #parser.add_argument('-p', '--p', action="store_true", dest="p",
+    #    help='Plot all fingerprints distribution.')
     args = parser.parse_args()
 	
     # start timer
@@ -43,9 +45,21 @@ if __name__ == '__main__':
         print ("Total time loading fingerprints: %.2f seconds." % (t1 - t0))
 
         while True:
-            file_name = input ("\nPlease type the path of the song to be recognized (or type exit):")
+
+            print ("---------------------------------------------------------------")
+            print ("Choose from the following options:")
+            print ("Option 1: type print to print the fingerprints distribution.")
+            print ("Option 2: type mic to recognize a song from microphone.")
+            print ("Option 3: type the path of the song to be recognized.")
+            print ("Option 4: type exit to exit the program.")
+            print ("---------------------------------------------------------------")
+            file_name = input ("\nYour input:")
             if file_name.lower() == "exit":
                 break
+            if file_name.lower() == "print":
+                # Plot fingerprints distribution
+                mf.plot_all_fingerprints()
+                continue
 
             time_limit = input ("Please give a limit of time (in seconds): ")
 
@@ -69,13 +83,6 @@ if __name__ == '__main__':
                 print (e)
 
         	
-    elif args.p:
-        # Plot fingerprints distribution
-
-        # Load all fingerprints
-        mf.load_fingerprints()
-        mf.plot_all_fingerprints()
-
 
     end = time.time()
     print ("Total time elapsed %.2f seconds." % (end - t0))

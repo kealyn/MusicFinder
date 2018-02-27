@@ -62,8 +62,8 @@ class Plotter(object):
         y_pos = np.arange(len(names)) * (bar_width + 1)
         counts = np.array(counts)
 
-        mask1 = counts < 50000
-        mask2 = counts >= 50000
+        mask1 = counts < 60000
+        mask2 = counts >= 60000
 
         plt.rcParams["figure.figsize"] = [10,30]
         plt.rcParams.update({'font.size': 18})
@@ -79,12 +79,19 @@ class Plotter(object):
         plt.subplots_adjust(left=0.2, top=0.8)
         plt.savefig("Plots/Fingerprints_distribtion.png", dpi = 400, bbox_inches='tight')
 
+        print ("Plotting saved to Plots/Fingerprints_distribtion.png")
         return
 
     '''
     Method that plots the distribution of candidates w.r.t. the given file
     '''
-    def plot_candidates(self, song_name, num_hash_original, candidates):
+    def plot_candidates(self, song_name, num_hash_original, orig_candidates):
+
+        # Convert values to confidence
+        orig_values = list(orig_candidates.values())
+        total_sum = sum(orig_values)
+
+        candidates = {k: (v / total_sum * 100) for k, v in orig_candidates.items()}
 
         # Prepare data for plot
         keys = list(candidates.keys())

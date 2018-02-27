@@ -147,6 +147,26 @@ The third set of experiment is to give a new song that does not appear in the so
 
 
 
+## Parameters
+
+In this section, we list out the parameters we have introduced with their descriptions and default values.
+
+| Parameter | Description | Default value |
+| ---    |--- | --- |
+| Default_Hash_File_Name | File name that keeps all hash values  | "Hash_Library.csv" |
+| Default_Width_FFT | Size of the FFT window | 4096 |
+| Default_Overlap_Ratio | Overlapping ratio between consecutive windows | 0.5 |
+| Default_Frequency_Rate | Sampling rate | 44100 Hz |
+| Default_Peak_Threshold | Minimum amplitude to be considered a peak | 10 |
+| Default_Peak_Neighborhood_Size | Minimum number of cells around a point for it to be considered as a peak | 20 |
+| Default_Target_Area | Maximum hop difference between the peak and its pairings | 20 |
+| Default_Audio_Limit | Time limit of audio files for fingerprinting | 60 s |
+| Default_Candidate_Threshold_In_Percentage | Ratio of matching hashes for a song to be a candidate compared to the best matching | 0.5 |
+| Default_Alignment_Ratio | The ratio of fingerprints that are aligned between the test song and the best match | 0.5 |
+
+
+
+
 ## Enhancements
 - **Fingerprint library service**: This can save the loading time of fingerprints prior to recognition.
 - **A simple GUI**
